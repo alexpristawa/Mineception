@@ -192,7 +192,9 @@ class Board {
         }
 
         if(this.isOuter) {
-            alert('You won!');
+            setTimeout(() => {
+                alert('You won!');
+            })
         } else {
             Board.board.tileMap[this.y][this.x].tile.reveal();
         }

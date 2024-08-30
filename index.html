@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <link href="Stylesheets/openingScreen.css" rel="stylesheet" type="text/css" />
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kalam&display=swap');  /*  font-family: 'Kalam', cursive;  */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@100..900&display=swap'); /*  font-family: 'Noto Sans Mono', monospace; */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif&display=swap'); /*  font-family: 'Noto Serif', serif;  */
+        @import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap'); /*  font-family: 'Nunito', sans-serif;  */
+        @import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap'); /*  font-family: 'Parisienne', cursive;  */
+        @import url('https://fonts.googleapis.com/css2?family=Train+One&display=swap'); /* font-family: 'Train One', system-ui; */
+        @import url('https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap'); /* font-family: "Bree Serif", serif; */
+        @import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap'); /* font-family: "Exo 2", sans-serif; */
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap'); /* font-family: 'Montserrat', sans-serif; */
+        @import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap'); /* font-family: 'Ubuntu', sans-serif; */
+    </style>
+    <title>Mineception</title>
+</head>
+<body>
+
+    <screen id = 'openingScreen', class = 'activeScreen'>
+        <div>
+
+        </div>
+        <div>
+            <div class = 'wrapper'>
+                <div class = 'scene'>
+                    <div class = 'text3dContainer'></div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div id = 'playDiv'>
+                <div id = 'playGame' data-type = 'PLAY GAME' data-inactive_type = 'Extra'>PLAY GAME</div>
+                <div id = 'gamemodeHolder'>
+                    <div id = 'mineception' data-type = 'Mineception' data-inactive_type = 'Mines Only'>Mineception</div>
+                    <div id = 'classicMinesweeper' data-type = 'Classic Minesweeper' data-inactive_type = 'Placeholder'>Classic Minesweeper</div>
+                    <div id = 'puzzles' data-type = 'Puzzles' data-inactive_type = 'Placeholder'>Puzzles</div>
+                    <div id = 'extra' data-type = 'Extra' data-inactive_type = 'Back'>Extra</div>
+                    <div id = 'arrow'><i class="fas fa-play"></i></div>
+                </div>
+            </div>
+        </div>
+    </screen>
+
+    <screen id = 'boardScreen'>
+        <div>
+            <div>
+                <div id = 'customizationsButton' onclick = 'Customizations.toggleMenu()'>
+                    <i class = 'fas fa-sliders'></i>
+                </div>
+            </div>
+            <div>
+                <div id = 'timer'>00:00:00</div>
+            </div>
+            <div id = 'title'>MINECEPTION</div>
+            <div id = 'counterHolders'>
+                <div id = 'mineCountDiv'>
+                    <div>
+                        <img src = 'Flag.png'>
+                    </div>
+                    <div id = 'mineCount'></div>
+                </div>
+
+                <div id = 'clickCountDiv'>
+                    <div>
+                        <i class = 'fas fa-arrow-pointer'></i>
+                    </div>
+                    <div id = 'clickCount'>0</div>
+                </div>
+            </div>
+            <div>
+                <div id = 'settingsButton'>
+                    <i class="fas fa-cog"></i>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div id = 'board'>
+
+            </div>
+            <div id = 'customizationsMenu' data-active = 'false'>
+                <div class = 'normal'>
+                    <p>Board Dimensions</p>
+                    <div><span>Rows: </span><input type = 'number' id = 'rows' placeholder = 'Rows'></div>
+                    <div><span>Columns: </span><input type = 'number' id = 'columns' placeholder = 'Columns'></div>
+                </div>
+                <div class = 'normal'>
+                    <p>Mines</p>
+                    <div><span>Mines: </span><input type = 'number' id = 'mines' placeholder = 'Mines'></div>
+                    <div><span>Density: </span><input type = 'number' id = 'density' placeholder = 'Density'></div>
+                </div>
+                <div class = 'normal'>
+                    <p>Inner Dimensions</p>
+                    <div><span>Rows: </span><input type = 'number' id = 'innerRows' placeholder = 'Rows'></div>
+                    <div><span>Columns: </span><input type = 'number' id = 'innerColumns' placeholder = 'Columns'></div>
+                </div>
+                <div class = 'normal'>
+                    <p>Inner Mines</p>
+                    <div><span>Mines: </span><input type = 'number' id = 'innerMines' placeholder = 'Mines'></div>
+                    <div><span>Density: </span><input type = 'number' id = 'innerDensity' placeholder = 'Density'></div>
+                </div>
+                <div>
+                    <p>No Flag</p>
+                    <input type = 'checkbox' id = 'noFlag'>
+                </div>
+                <div class = 'clickMechanics'>
+                    <p>Click Mechanics</p>
+                    <div>
+                        <div>
+                            <span>Mousedown</span><input type = 'radio' name = 'clickMechanics' id = 'clickMechanics1' checked>
+                        </div>
+                        <div>
+                            <span>Mouseup</span><input type = 'radio' name = 'clickMechanics' id = 'clickMechanics2'>
+                        </div>
+                    </div>
+                </div>
+                <button id = 'newGame'>New Game</button>
+            </div>
+        </div>
+    </screen>
+    
+    <script src="Classes/Games/Game.js"></script>
+    <script src="Classes/Games/Mineception/Mineception.js"></script>
+    <script src="Classes/Games/Mineception/InnerBoard.js"></script>
+    <script src="Classes/Games/Mineception/OuterBoard.js"></script>
+    <script src="Classes/Games/Classic.js"></script>
+    <script src="Classes/Games/MinesOnly.js"></script>
+    <script src="Classes/Board.js"></script>
+    <script src="Classes/Customizations.js"></script>
+    <script src="Classes/StorageManager.js"></script>
+    <script src="Classes/Tile.js"></script>
+    <script src='script.js'></script>
+    <script src="Scripts/animationFunctions.js"></script>
+    <script src="Scripts/positionFunctions.js"></script>
+    <script src="Scripts/myLibrary.js"></script>
+    <script src="Scripts/Canvas.js"></script>
+</body>
+</html>

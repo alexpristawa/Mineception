@@ -1,0 +1,120 @@
+#openingScreen {
+    flex-direction: column;
+}
+
+#openingScreen > div:nth-child(1) {
+    display: flex;
+    width: 100%;
+    height: 5%;
+}
+
+#openingScreen > div:nth-child(3) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 65%;
+}
+
+#openingScreen #playDiv {
+    display: flex;
+    flex-direction: column;
+    height: 80%;
+    width: 25%;
+    border: 1.5px solid rgb(170, 170, 170, 0.5);
+    border-radius: 0.3rem;
+}
+
+#openingScreen #playGame {
+    display: flex;
+    padding-left: 4%;
+    box-sizing: border-box;
+    align-items: center;
+    height: 15%;
+    width: 100%;
+    background-color: rgb(170, 170, 170, 0.3);
+    color: white;
+    font-size: 2rem;
+    border-bottom: 1px solid rgb(170, 170, 170, 0.5);
+    font-family: 'Ubuntu', sans-serif;
+}
+
+#openingScreen #gamemodeHolder {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 85%;
+    width: 100%;
+}
+
+#openingScreen #gamemodeHolder > div:not(#arrow) {
+    display: flex;
+    align-items: center;
+    background-color: rgb(170, 170, 170, 0.3);
+    color: white;
+    font-size: 1.5rem;
+    font-family: 'Ubuntu', sans-serif;
+    padding-left: 25%;
+    height: 33.3333333333%;
+    cursor: pointer;
+    transition: background-color 500ms ease;
+}
+
+#openingScreen #gamemodeHolder > div:not(#arrow):hover {
+    background-color: rgb(170, 170, 170, 0.5);
+    font-weight: 500;
+}
+
+#openingScreen #gamemodeHolder #arrow {
+    position: absolute;
+    left: 12.5%;
+    top: 14%;
+    font-size: 2rem;
+    transition: top 300ms cubic-bezier(.34,0,.4,1);
+    color: rgba(255, 255, 255, 0.8);
+    transform: translate(-50%, -50%);
+}
+
+#openingScreen > div:nth-child(2) {
+    height: 30%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.wrapper {
+    perspective: 1000px;
+    height: 70%;
+    width: 50%;
+}
+
+.scene {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform-style: preserve-3d;
+    height: 100%;
+    width: 100%;
+}
+
+.text3dContainer {
+    position: relative;
+    transform-style: preserve-3d;
+    transform: rotateY(0deg);
+    transition: transform 2500ms cubic-bezier(.35,.12,.42,1);
+    height: 6rem;
+    cursor: pointer;
+}
+
+.text3dLayer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 6rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    transform-style: preserve-3d;
+    color: black; /* Default color to ensure visibility */
+    font-family: 'Montserrat', sans-serif;
+}

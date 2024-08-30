@@ -1,0 +1,376 @@
+:root {
+    --backgroundColor: rgb(36, 75, 93);
+    --darkerBackgroundColor: rgb(29, 60, 74); /* 0.8 */
+    --evenDarkerBackgroundColor: rgb(22, 45, 56); /* 0.6 */
+    --evenDarkerBackgroundColor90: rgb(22, 45, 56, 0.5);
+    --titleColor: rgb(217, 45, 36);
+    --titleColor90: rgb(217, 45, 36, 0.5);
+    --darkerTitleColor: rgb(174, 36, 29);
+    --darkerTitleColor90: rgb(174, 36, 29, 0.5);
+    --evenDarkerTitleColor: rgb(130, 27, 22);
+    --evenDarkerTitleColor90: rgb(130, 27, 22, 0.5);
+    --superDarkTitleColor: rgb(87, 18, 14);
+    --outerBoardFontSize: 2rem;
+    --innerBoardFontSize: 2rem;
+}
+
+* {
+    font-family: 'Montserrat', sans-serif;
+    vertical-align: top;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+html,body {
+    height: 100%;
+    width: 100%;
+}
+
+screen {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+screen.activeScreen {
+    display: flex;
+}
+
+screen:not(.activeScreen) {
+    display: none;
+}
+
+body {
+    background: radial-gradient(circle at 40vw -30vh, rgb(36, 75, 93), rgb(52, 105, 145), rgb(68, 78, 117));
+    background-size: cover;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+img {
+    -webkit-user-drag: none; /* Prevent image dragging in WebKit browsers */
+    user-drag: none; /* Prevent image dragging in standard-compliant browsers */
+    pointer-events: none; /* Prevent mouse events on the image */
+}
+
+
+#boardScreen {
+    flex-direction: column;
+}
+
+#boardScreen > div:nth-child(1) {
+    display: flex;
+    width: 100%;
+    height: 10%;
+}
+
+#boardScreen > div {
+    display: flex;
+    height: 100%;
+}
+
+#boardScreen > div:nth-child(1) > div {
+    display: flex;
+    height: 100%;
+}
+
+#boardScreen > div:nth-child(1) > div:nth-child(1), #boardScreen > div:nth-child(1) > div:nth-child(5) {
+    justify-content: center;
+    align-items: center;
+    width: 5%;
+}
+
+#boardScreen > div:nth-child(1) > div:nth-child(2), #boardScreen > div:nth-child(1) > div:nth-child(4) {
+    justify-content: space-evenly;
+    align-items: center;
+    width: 30%;
+}
+
+#boardScreen > div:nth-child(1) > #title {
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+    color: var(--titleColor);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    width: 30%;
+}
+
+#boardScreen > div:nth-child(2) {
+    position: relative;
+    height: 90%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#board {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    grid-gap: calc(var(--outerBoardFontSize)/10);
+}
+
+.tile {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: calc(10%);
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.tile > .secondTile {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    pointer-events: none;
+}
+
+.outerTile {
+    font-size: var(--outerBoardFontSize);
+    background-color: var(--darkerBackgroundColor);
+    /*border: calc(var(--outerBoardFontSize)/20) solid var(--backgroundColor);*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.innerTile {
+    font-size: var(--innerBoardFontSize);
+    background-color: var(--darkerTitleColor90);
+    /*border: calc(var(--innerBoardFontSize)/20) solid var(--titleColor90);*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tile img {
+    pointer-events: none;
+    height: 90%;
+    width: 90%;
+}
+
+.tileFront, .tileBack {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+.tileFront {
+    display: grid;
+    grid-gap: calc(var(--innerBoardFontSize)/10);
+}
+
+.tileBack {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1em;
+    transform: rotateY(-180deg);
+    color: yellow;
+    pointer-events: none;
+    background-color: var(--darkerBackgroundColor);
+    opacity: 0;
+    border-radius: calc(10%);
+}
+
+@keyframes flip {
+    0% {
+        transform: rotateY(0deg);
+        opacity: 1;
+    }
+    50% {
+        transform: rotateY(90deg);
+        opacity: 1;
+    }
+    51% {
+        opacity: 0;
+    }
+    100% {
+        transform: rotateY(180deg);
+        opacity: 0;
+    }
+}
+
+@keyframes backFlip {
+    0% {
+        transform: rotateY(-180deg);
+        opacity: 0;
+    }
+    49% {
+        opacity: 0;
+    }
+    50% {
+        transform: rotateY(-90deg);
+        opacity: 1;
+    }
+    100% {
+        transform: rotateY(0deg);
+        opacity: 1;
+    }
+}
+
+#customizationsButton {
+    height: 80%;
+    aspect-ratio: 1/1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--evenDarkerBackgroundColor);
+    border-radius: 100%;
+    margin-left: 2%;
+    cursor: pointer;
+}
+
+#customizationsButton > i {
+    font-size: 2rem;
+    color: white;
+    pointer-events: none;
+}
+
+#settingsButton {
+    height: 80%;
+    aspect-ratio: 1/1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--evenDarkerBackgroundColor);
+    border-radius: 100%;
+    margin-right: 2%;
+    cursor: pointer;
+}
+
+#settingsButton > i {
+    font-size: 2rem;
+    color: white;
+    pointer-events: none;
+}
+
+#customizationsMenu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 80%;
+    width: 15%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    display: none;
+}
+
+#customizationsMenu p { 
+    font-size: 1.2rem;
+    color: white;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+#customizationsMenu > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#customizationsMenu > .normal > div {
+    width: 80%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    color: white;
+    font-size: 0.8rem;
+}
+
+#customizationsMenu > .normal span {
+    margin-right: 7%;
+}
+
+#customizationsMenu > .normal input {
+    width: 50%;
+}
+
+#customizationsMenu > .clickMechanics > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    color: rgb(170, 170, 170)
+}
+
+#customizationsMenu > .clickMechanics > div > div {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#customizationsMenu > .clickMechanics > div > div > input {
+    margin-left: 10%;
+}
+
+#customizationsMenu #newGame {
+    height: 8%;
+    width: 60%;
+    background-color: var(--titleColor);
+    color: white;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#boardScreen #timer {
+    font-size: 1.5rem;
+    font-family: 'Noto Sans Mono', monospace;
+    color: rgb(200, 200, 200);
+    font-weight: 600;
+}
+
+#boardScreen #counterHolders > div {
+    width: 27%;
+    height: 60%;
+    background-color: var(--evenDarkerBackgroundColor);
+    border-radius: 0.6rem;
+    overflow: hidden;
+    display: flex;
+}
+
+#boardScreen #counterHolders > div > div:nth-child(1) {
+    height: 100%;
+    width: 37.803309611%;
+    background-color: rgb(255, 255, 255, 0.05);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#boardScreen #counterHolders > div > div:nth-child(1) > img {
+    height: 80%;
+    aspect-ratio: 1/1;
+}
+
+#boardScreen #counterHolders > div > div:nth-child(1) > i {
+    color: white;
+    font-size: 1.5rem;
+}
+
+#boardScreen #counterHolders > div > div:nth-child(2) {
+    height: 100%;
+    width: 62.196690389%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 1.3rem;
+}
+
+#boardScreen #clickCount {
+    transition: background 0.2s ease;
+}

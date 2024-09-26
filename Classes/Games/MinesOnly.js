@@ -1,13 +1,15 @@
 class MinesOnly extends Game {
 
+    static stats = ['rounds', 'time', 'dimensions', 'mines'];
+
     constructor(board) {
         super(board);
         this.rounds = 0;
+        clickCount.innerHTML = 0;
         this.clickCount = 0;
     }
 
     newRound() {
-        this.rounds++;
         this.clickCount++;
         clickCount.innerHTML = this.clickCount;
         let tileMap = this.board.tileMap;
@@ -25,6 +27,12 @@ class MinesOnly extends Game {
                 }
             }
         }
+
+        if(this.checkForCompletion()) {
+            Win.update(this);
+            return;
+        }
+        this.rounds++;
     }
 
     leftClickFunction(event) {
@@ -41,10 +49,11 @@ class MinesOnly extends Game {
             if((keyboard.Meta || keyboard.Control) && this.board.tileMap[y][x].tile.wasRevealed === false) {
                 super.rightClickFunction(event);
             } else {
+                let tile = this.board.tileMap[y][x].tile;
+                if(tile.wasRevealed || tile.flagged) return;
                 if(this.clickCount > 0) {
                     this.clickCount--;
                     clickCount.innerHTML = this.clickCount;
-                    let tile = this.board.tileMap[y][x].tile;
                     if(this.board.tileMap[y][x].mine === true) {
                         alert("Game over");
                     } else {
@@ -58,6 +67,8 @@ class MinesOnly extends Game {
                 }
             }
         }
+
+        this.checkForCompletion();
     }
 
     rightClickFunction(event) {
@@ -69,5 +80,22 @@ class MinesOnly extends Game {
         let y = parseInt(div.dataset.y);
         let x = parseInt(div.dataset.x);
         this.board.tileMap[y][x].tile.flag();
+    }
+
+    checkForCompletion() {
+        let allFlags = true;
+        let allRevealed = true;
+        this.board.tileMap.forEach(row => {
+            row.forEach(tile => {
+                if(tile.mine) {
+                    if(!tile.tile.flagged) {
+                        allFlags = false;
+                    }
+                } else if(!tile.tile.wasRevealed) {
+                    allRevealed = false;
+                }
+            });
+        });
+        return allRevealed || allFlags;
     }
 }

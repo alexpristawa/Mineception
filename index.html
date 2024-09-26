@@ -23,7 +23,7 @@
 </head>
 <body>
 
-    <screen id = 'openingScreen', class = 'activeScreen'>
+    <screen id = 'openingScreen' class = 'activeScreen'>
         <div>
 
         </div>
@@ -59,7 +59,7 @@
             <div>
                 <div id = 'timer'>00:00:00</div>
             </div>
-            <div id = 'title'>MINECEPTION</div>
+            <div id = 'title' onclick = 'createBoard(gamemode == "mineception");'>MINECEPTION</div>
             <div id = 'counterHolders'>
                 <div id = 'mineCountDiv'>
                     <div>
@@ -81,7 +81,7 @@
                 </div>
             </div>
         </div>
-        <div>
+        <div id = 'boardContainer'>
             <div id = 'board'>
 
             </div>
@@ -124,6 +124,16 @@
                 <button id = 'newGame'>New Game</button>
             </div>
         </div>
+
+        <div id = 'blur'>
+            <div id = 'winDiv'>
+                <div>Splendid!</div>
+                <div>
+                    <div id = 'statsList'><div>test</div></div>
+                </div>
+                <div onclick = '{Win.blur.fadeOut(500, false)}'>Return</div>
+            </div>
+        </div>
     </screen>
     
     <script src="Classes/Games/Game.js"></script>
@@ -136,6 +146,7 @@
     <script src="Classes/Customizations.js"></script>
     <script src="Classes/StorageManager.js"></script>
     <script src="Classes/Tile.js"></script>
+    <script src="Classes/Win.js"></script>
     <script src='script.js'></script>
     <script src="Scripts/animationFunctions.js"></script>
     <script src="Scripts/positionFunctions.js"></script>

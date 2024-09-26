@@ -3,7 +3,7 @@ const body = document.querySelector('body');
 
 //For extras, make the mine only gamemode
 const boardContainer = document.querySelector('#boardContainer');
-const boardElement = document.querySelector('#board');
+let boardElement = document.querySelector('#board');
 const timer = document.querySelector('#boardScreen #timer');
 const mineCountDiv = document.querySelector('#boardScreen #mineCountDiv');
 const mineCount = document.querySelector('#boardScreen #mineCount');
@@ -180,7 +180,6 @@ document.addEventListener('DOMContentLoaded', () => {
                             if(didSwitch == 1) {
                                 divs.forEach(div => {
                                     let temp = div.dataset.type;
-                                    console.log(div.dataset.inactive_type);
                                     div.dataset.type = div.dataset.inactive_type;
                                     div.dataset.inactive_type = temp;
                                 });
@@ -224,6 +223,9 @@ document.addEventListener('keydown', (event) => {
     keyboard[event.key] = true;
     if(event.key == 'r' && Game.game.constructor.name == 'MinesOnly') {
         Game.game.newRound();
+    }
+    if(event.key == 'n') {
+        createBoard(gamemode == "mineception");
     }
 });
 

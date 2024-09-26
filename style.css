@@ -3,6 +3,7 @@
     --darkerBackgroundColor: rgb(29, 60, 74); /* 0.8 */
     --evenDarkerBackgroundColor: rgb(22, 45, 56); /* 0.6 */
     --evenDarkerBackgroundColor90: rgb(22, 45, 56, 0.5);
+    --evenDarkerBackgroundColor95: rgb(22, 45, 54, 0.95);
     --titleColor: rgb(217, 45, 36);
     --titleColor90: rgb(217, 45, 36, 0.5);
     --darkerTitleColor: rgb(174, 36, 29);
@@ -65,7 +66,7 @@ img {
     height: 10%;
 }
 
-#boardScreen > div {
+#boardScreen > div:nth-child(2) {
     display: flex;
     height: 100%;
 }
@@ -95,6 +96,7 @@ img {
     font-family: 'Montserrat', sans-serif;
     font-weight: 600;
     width: 30%;
+    cursor: pointer;
 }
 
 #boardScreen > div:nth-child(2) {
@@ -373,4 +375,82 @@ img {
 
 #boardScreen #clickCount {
     transition: background 0.2s ease;
+}
+
+#blur {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    pointer-events: none;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    display: none;
+    opacity: 0;
+}
+
+#winDiv {
+    position: absolute;
+    height: 60vh;
+    width: 50vw;
+    top: 25vh;
+    left: 25vw;
+    background-color: var(--evenDarkerBackgroundColor95);
+    z-index: 10;
+    border-radius: 1.5vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: all;
+    overflow: hidden;
+}
+
+#winDiv > div:nth-child(1) {
+    width: 100%;
+    height: 20%;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+}
+
+#winDiv > div:nth-child(2) {
+    display: flex;
+    height: 70%;
+    width: 100%;
+}
+
+#winDiv #statsList {
+    height: 100%;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    padding: 2%;
+}
+
+#winDiv #statsList > div {
+    height: 13%;
+    font-size: 1.3rem;
+    width: 100%;
+    color: white;
+}
+
+#winDiv > div:nth-child(3) {
+    height: 10%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0);
+    transition: background 100ms ease;
+}
+
+#winDiv > div:nth-child(3):hover {
+    background-color: rgba(255, 255, 255, 0.05);
 }

@@ -10,6 +10,7 @@ class Board {
         this.mineception = this.innerDimensions !== false;
         this.mine = false;
         this.mineCount = Math.round(outerDimensions.x * outerDimensions.y / outerDimensions.density);
+        this.ogMineCount = this.mineCount;
         this.firstClick = true;
         if(this.isOuter) {
             Board.board = this;
@@ -191,10 +192,10 @@ class Board {
             }
         }
 
-        if(this.isOuter) {
+        if((this.mineception && this.isOuter) || !this.mineception) {
             setTimeout(() => {
-                alert('You won!');
-            })
+                Win.update(Game.game);
+            });
         } else {
             Board.board.tileMap[this.y][this.x].tile.reveal();
         }

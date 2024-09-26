@@ -5,19 +5,30 @@ class Game {
     constructor(board) {
         this.board = board;
         this.eventListeners();
+        if(Game.game) {
+            Game.game.board.box.removeEventListener('mousedown', Game.game.LCEL);
+            Game.game.board.box.removeEventListener('contextmenu', Game.game.RCEL);
+        }
+        if(document.querySelector('.innerBoard') != null) {
+            document.querySelector('.innerBoard').fadeOut(200, true);
+        }
         Game.game = this;
     }
     
     eventListeners() {
-        this.board.box.addEventListener('mousedown', (event) => {
-            if(event.button === 0) { //If it is a left click)
-                this.leftClickFunction(event);
-            }
-        });
-        this.board.box.addEventListener('contextmenu', (event) => {
-            event.preventDefault();
-            this.rightClickFunction(event);
-        });
+        this.board.box.addEventListener('mousedown', this.LCEL);
+        this.board.box.addEventListener('contextmenu', this.RCEL);
+    }
+
+    LCEL = (event) => {
+        if(event.button === 0) { //If it is a left click)
+            this.leftClickFunction(event);
+        }
+    }
+
+    RCEL = (event) => {
+        event.preventDefault();
+        this.rightClickFunction(event);
     }
 
     leftClickFunction(event) {

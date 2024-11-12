@@ -70,23 +70,13 @@ class Tile {
             if(!this.parent.isOuter || !this.parent.mineception) {
                 if(!this.flagged) {
                     this.div.style.backgroundColor = this.parent.mineception ? 'var(--evenDarkerTitleColor90)': 'var(--evenDarkerBackgroundColor)';
-                    if(this.value != 0 || this.parent.game.constructor.mode == 'chessSweeper') {
-                        if(this.parent.game.constructor.mode == 'chessSweeper') {
-                            this.div.querySelector('p').innerHTML = this.value;
-                            let color;
-                            if(this.value == 0) {
-                                color = 'rgb(200, 200, 200)';
-                            } else if(this.value < 9) {
-                                color = colorArr[this.value-1];
-                            } else {
-                                let b1 = Math.sin(this.value*101)*50+80;
-                                let b2 = Math.sin(this.value*249)*50+90
-                                let b3 = Math.sin(this.value*439)*50+65;
-                        
-                                color = `rgb(${b1}, ${b2}, ${b3})`;
+                    if(this.value != 0 || this.parent.game.constructor.name == 'ChessSweeper') {
+                        if(this.parent.game.constructor.name == 'ChessSweeper') {
+                            this.div.querySelector('p').style.color = this.parent.game.getColor(this.value);
+                            if(!(this.chessPiece == 'pawn' && this.y == 0)) {
+                                this.div.querySelector('p').innerHTML = this.value;;
                             }
-                            this.div.querySelector('p').style.color = color.substring(0, color.length-1) + ', 0.7)';
-                            this.div.querySelector('i').style.opacity = '1';
+                            this.div.querySelectorAll('i').forEach(i => i.style.opacity = '1');
                         } else {
                             this.div.innerHTML = this.value;
                             this.div.style.color = colorArr[this.value-1];

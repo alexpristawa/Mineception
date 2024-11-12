@@ -50,7 +50,7 @@ class Game {
             this.board.ms = 0;
             this.board.firstClick = false;
             this.board.fixMines(y, x);
-            if(this.constructor.mode == 'chessSweeper') {
+            if(this.constructor.name == 'ChessSweeper') {
                 this.assignPieces();
                 this.firstReveal(y, x);
             }

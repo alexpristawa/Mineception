@@ -1,6 +1,7 @@
 class ChessSweeper extends Game {
 
     static mode = 'chessSweeper';
+    static stats = ['time', 'dimensions', 'mines'];
 
     constructor(board) {
         super(board);
@@ -10,8 +11,10 @@ class ChessSweeper extends Game {
     leftClickFunction(event) {
         super.leftClickFunction(event);
         let div = event.target;
-        if(!this.board.mineception && !event.target.classList.contains('tile')) {
-            div = event.target.parentNode;
+        while(!div.classList.contains('tile') && div != this.board.box) {
+            if(!this.board.mineception) {
+                div = event.target.parentNode;
+            }
         }
         if(!div.classList.contains('tile')) return;
         this.clearSelected();
@@ -23,6 +26,9 @@ class ChessSweeper extends Game {
         }
         if(this.board.tileMap[y][x].tile.wasRevealed && !(event.metaKey || event.ctrlKey)) {
             this.selected = this.board.tileMap[y][x];
+            if(this.selected.tile.chessPiece == 'pawn' && this.selected.tile.y == 0) {
+                this.displayPromotionOptions();
+            }
             let arr = this.accessAllTiles(this.selected.tile);
             arr.forEach(tile => {
                 if(!tile.tile.wasRevealed) {
@@ -33,6 +39,9 @@ class ChessSweeper extends Game {
     }
 
     clearSelected() {
+        document.querySelectorAll('.promotionOptionsDiv').forEach(div => {
+            div.fadeOut(200, true);
+        });
         if(this.selected) {
             this.accessAllTiles(this.selected.tile).forEach(tile => {
                 if(tile.tile.wasRevealed) {
@@ -47,21 +56,23 @@ class ChessSweeper extends Game {
     assignPieces() {
         this.board.tileMap.forEach(row => {
             row.forEach(tile => {
-                let num = Math.random();
-                if(num < 0.025) {
-                    tile.tile.chessPiece = 'queen';
-                } else if(num < 0.075) {
-                    tile.tile.chessPiece = 'rook';
-                } else if(num < 0.125) {
-                    tile.tile.chessPiece = 'bishop';
-                } else if(num < 0.2) {
-                    tile.tile.chessPiece = 'knight';
-                } else if(num < 0.4) {
-                    tile.tile.chessPiece = 'pawn';
-                } else {
-                    tile.tile.chessPiece = 'king';
+                if(!tile.mine) {
+                    let num = Math.random();
+                    if(num < 0.025) {
+                        tile.tile.chessPiece = 'queen';
+                    } else if(num < 0.075) {
+                        tile.tile.chessPiece = 'rook';
+                    } else if(num < 0.125) {
+                        tile.tile.chessPiece = 'bishop';
+                    } else if(num < 0.2) {
+                        tile.tile.chessPiece = 'knight';
+                    } else if(num < 0.4) {
+                        tile.tile.chessPiece = 'pawn';
+                    } else {
+                        tile.tile.chessPiece = 'king';
+                    }
+                    this.assignTileProperties(tile.tile);
                 }
-                tile.tile.div.innerHTML = `<p></p><i class = "fas fa-chess-${tile.tile.chessPiece}"></i>`;
             });
         });
 
@@ -94,7 +105,10 @@ class ChessSweeper extends Game {
     }
 
     assignTileProperties(tile) {
-        tile.div.innerHTML = `<p></p><i class = "fas fa-chess-${tile.chessPiece}"></i>`;
+        tile.div.innerHTML = `<p></p><i class = "pieceIcon fas fa-chess-${tile.chessPiece}"></i>`;
+        if(tile.chessPiece == 'pawn' && tile.y == 0) {
+            tile.div.innerHTML += '<i class = "crown fas fa-crown"></i>';
+        }
     }
 
     accessAllTiles(tile) {
@@ -161,5 +175,56 @@ class ChessSweeper extends Game {
             }
         }
         return arr;               
+    }
+
+    displayPromotionOptions() {
+        let div = document.createElement('div');
+        div.classList.add('promotionOptionsDiv');
+        let tileSize = this.selected.tile.div.offsetWidth;
+        div.style.left = `${this.selected.tile.div.offsetLeft + tileSize/2 - window.innerHeight * 0.03}px`;
+        div.style.top = `${this.selected.tile.div.getY() + tileSize}px`;
+        body.appendChild(div);
+
+        ['king', 'rook', 'knight', 'bishop', 'queen'].forEach(piece => {
+            let pieceDiv = document.createElement('div');
+            pieceDiv.classList.add('promotionOption');
+            pieceDiv.innerHTML = `<i class = "pieceIcon fas fa-chess-${piece}"></i>`;
+            pieceDiv.addEventListener('click', () => {
+                this.selected.tile.chessPiece = piece;
+                this.assignTileProperties(this.selected.tile);
+                let count = 0;
+                this.accessAllTiles(this.selected.tile).forEach(tile => {
+                    if(tile.mine) {
+                        count++;
+                    }
+                });
+                this.selected.tile.value = count;
+                let Div = this.selected.tile.div;
+                Div.querySelector('p').innerHTML = count;
+                Div.querySelector('i').style.opacity = '1';
+                Div.style.color = this.getColor(count);
+                
+                div.remove();
+                this.clearSelected();
+            });
+
+            div.appendChild(pieceDiv);
+        });
+    }
+
+    getColor(value) {
+        let color;
+        if(value == 0) {
+            color = 'rgb(200, 200, 200)';
+        } else if(value < 9) {
+            color = colorArr[value-1];
+        } else {
+            let b1 = Math.sin(value*101)*50+80;
+            let b2 = Math.sin(value*249)*50+90
+            let b3 = Math.sin(value*439)*50+65;
+    
+            color = `rgb(${b1}, ${b2}, ${b3})`;
+        }
+        return color.substring(0, color.length-1) + ', 0.7)';
     }
 }

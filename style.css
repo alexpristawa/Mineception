@@ -151,7 +151,7 @@ img {
     z-index: 1;
 }
 
-.outerTile > i {
+.outerTile > i.pieceIcon {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -159,6 +159,15 @@ img {
     color: rgb(25, 25, 25);
     font-size: 3.5rem;
     z-index: 0;
+    opacity: 0;
+}
+
+.outerTile > i.crown {
+    position: absolute;
+    right: 10%;
+    top: 10%;
+    color: yellow;
+    font-size: 1rem;
     opacity: 0;
 }
 
@@ -474,4 +483,39 @@ img {
 
 #winDiv > div:nth-child(3):hover {
     background-color: rgba(255, 255, 255, 0.05);
+}
+
+.promotionOptionsDiv {
+    position: absolute;
+    height: 30vh;
+    width: 6vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: var(--backgroundColor);
+    border-radius: 0.2rem;
+    z-index: 2;
+}
+
+.promotionOptionsDiv > .promotionOption {
+    height: 19%;
+    width: 93%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--evenDarkerBackgroundColor);
+    cursor: pointer;
+    transition: background 0.1s ease;
+    border-radius: 0.3vh;
+}
+
+.promotionOptionsDiv > .promotionOption:hover {
+    background-color: var(--darkerBackgroundColor);
+}
+
+.promotionOptionsDiv > .promotionOption > i {
+    pointer-events: none;
+    font-size: 4.5vh;
+    color: rgb(25, 25, 25);
 }

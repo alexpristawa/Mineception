@@ -214,10 +214,12 @@ boardElement.addEventListener('mousedown', (event) => {
     }
 });
 
-document.addEventListener('mousedown', (event) => {
+document.addEventListener('click', (event) => {
     if(Game.game) {
         if(Game.game.constructor.name == 'ChessSweeper') {
-            if(!event.target.matches('#boardContainer *')) {
+            console.log(event.target);
+            if(!event.target.matches('#boardContainer *') && !event.target.matches('.promotionOptionsDiv > *, .promotionOptionsDiv')) {
+                console.log('here');
                 Game.game.clearSelected();
                 Game.game.selected = null;
             }

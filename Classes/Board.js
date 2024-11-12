@@ -9,7 +9,7 @@ class Board {
         this.isOuter = this.innerDimensions !== null;
         this.mineception = this.innerDimensions !== false;
         this.mine = false;
-        this.mineCount = Math.round(outerDimensions.x * outerDimensions.y / outerDimensions.density);
+        this.mineCount = Math.floor(outerDimensions.x * outerDimensions.y / outerDimensions.density);
         this.ogMineCount = this.mineCount;
         this.firstClick = true;
         if(this.isOuter) {

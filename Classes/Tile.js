@@ -70,9 +70,27 @@ class Tile {
             if(!this.parent.isOuter || !this.parent.mineception) {
                 if(!this.flagged) {
                     this.div.style.backgroundColor = this.parent.mineception ? 'var(--evenDarkerTitleColor90)': 'var(--evenDarkerBackgroundColor)';
-                    if(this.value != 0) {
-                        this.div.innerHTML = this.value;
-                        this.div.style.color = colorArr[this.value-1];
+                    if(this.value != 0 || this.parent.game.constructor.mode == 'chessSweeper') {
+                        if(this.parent.game.constructor.mode == 'chessSweeper') {
+                            this.div.querySelector('p').innerHTML = this.value;
+                            let color;
+                            if(this.value == 0) {
+                                color = 'rgb(200, 200, 200)';
+                            } else if(this.value < 9) {
+                                color = colorArr[this.value-1];
+                            } else {
+                                let b1 = Math.sin(this.value*101)*50+80;
+                                let b2 = Math.sin(this.value*249)*50+90
+                                let b3 = Math.sin(this.value*439)*50+65;
+                        
+                                color = `rgb(${b1}, ${b2}, ${b3})`;
+                            }
+                            this.div.querySelector('p').style.color = color.substring(0, color.length-1) + ', 0.7)';
+                            this.div.querySelector('i').style.opacity = '1';
+                        } else {
+                            this.div.innerHTML = this.value;
+                            this.div.style.color = colorArr[this.value-1];
+                        }
                     } else {
                         for(let y = Math.max(0, this.y-1); y <= Math.min(this.parent.outerDimensions.y-1, this.y+1); y++) {
                             for(let x = Math.max(0, this.x-1); x <= Math.min(this.parent.outerDimensions.x-1, this.x+1); x++) {
@@ -99,6 +117,7 @@ class Tile {
                         }
                     }
                 } else {
+                    this.parent.game.gameDotGame();
                     let board = Board.board.tileMap[this.y][this.x];
                     this.div.classList.remove('innerBoard');
                     this.div.style.perspective = '1000px';
@@ -143,31 +162,29 @@ class Tile {
         } else if(courd && (!this.parent.isOuter || !this.parent.mineception) && !this.flagged) {
             let flagCount = 0;
             let allCorrect = true;
-            for(let y = Math.max(0, this.y-1); y <= Math.min(this.parent.outerDimensions.y-1, this.y+1); y++) {
-                for(let x = Math.max(0, this.x-1); x <= Math.min(this.parent.outerDimensions.x-1, this.x+1); x++) {
-                    if(this.parent.tileMap[y][x].tile.flagged) {
-                        flagCount++;
-                        if(!this.parent.tileMap[y][x].mine) {
-                            allCorrect = false;
-                        }
-                    }
+            let arr = this.parent.game.accessAllTiles(this);
+            arr.forEach(tile => {
+                if(tile.tile.flagged) {
+                    flagCount++;
                 }
-            }
+                if(tile.mine != tile.tile.flagged) {
+                    allCorrect = false;
+                }
+            });
             if(flagCount == this.value) {
                 if(!allCorrect) {
                     alert("Game over");
                 } else {
                     let actuallyCourded = false;
-                    for(let y = Math.max(0, this.y-1); y <= Math.min(this.parent.outerDimensions.y-1, this.y+1); y++) {
-                        for(let x = Math.max(0, this.x-1); x <= Math.min(this.parent.outerDimensions.x-1, this.x+1); x++) {
-                            if((y != this.y || x != this.x) && !this.parent.tileMap[y][x].mine) {
-                                if(!this.parent.tileMap[y][x].tile.wasRevealed) {
-                                    actuallyCourded = true;
-                                    this.parent.tileMap[y][x].tile.reveal(true);
-                                }
+                    let arr = this.parent.game.accessAllTiles(this);
+                    arr.forEach(tile => {
+                        if(!tile.mine) {
+                            if(!tile.tile.wasRevealed) {
+                                actuallyCourded = true;
+                                tile.tile.reveal(true);
                             }
                         }
-                    }
+                    });
                     return actuallyCourded === true ? 1 : 0; // Return 1 if the courd was successful
                 }
             }
@@ -177,22 +194,12 @@ class Tile {
     flag() {
         if(!this.wasRevealed) {
             this.flagged = !this.flagged;
-            if(this.parent.isOuter && this.parent.mineception) {
-                if(!this.flagged) {
-                    this.frontDiv.innerHTML = '';
-                    this.parent.mineCount++;
-                } else {
-                    this.frontDiv.innerHTML = '<img src="Flag.png">';
-                    this.parent.mineCount--;
-                }
+            if(!this.flagged) {
+                this.parent.game.assignTileProperties(this);
+                this.parent.mineCount++;
             } else {
-                if(!this.flagged) {
-                    this.div.innerHTML = '';
-                    this.parent.mineCount++;
-                } else {
-                    this.div.innerHTML = '<img src="Flag.png">';
-                    this.parent.mineCount--;
-                }
+                this.div.innerHTML += '<img src="Flag.png">';
+                this.parent.mineCount--;
             }
         }
     }

@@ -134,13 +134,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('#openingScreen #gamemodeHolder > div:not(#arrow)').forEach(div => {
         const I = i;
         div.addEventListener('mouseover', () => {
-            arrow.style.top = `${14 + I*25}%`;
+            arrow.style.top = `${10.8 + I*20}%`;
         });
 
         div.addEventListener('click', () => {
             divClickFunction();
             setTimeout(() => {
-                if(['mineception', 'classicMinesweeper'].includes(div.id)) {
+                if(['mineception', 'classicMinesweeper', 'chessSweeper'].includes(div.id)) {
                     document.getElementById('openingScreen').fadeOut(500, false);
                     document.getElementById('boardScreen').classList.toggle('activeScreen');
                     document.getElementById('boardScreen').style.opacity = 0;
@@ -152,6 +152,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 if(div.dataset.type == 'Mineception') {
                     gamemode = 'mineception';
                     createBoard(true);
+                } else if(div.dataset.type == 'ChessSweeper') {
+                    gamemode = 'chessSweeper';
+                    createBoard();
                 } else if(div.dataset.type == 'Classic Minesweeper') {
                     gamemode = 'classicMinesweeper';
                     createBoard();
@@ -252,7 +255,9 @@ let animationFunction = () => {
     let innerBoard = document.querySelector('.innerBoard');
     if(Board.board) {
         let outerBoardTileSize = boardElement.offsetWidth / Board.board.outerDimensions.x;
-        document.documentElement.style.setProperty('--outerBoardFontSize', `${outerBoardTileSize*0.5/rem}rem`);
+        let fontSize = outerBoardTileSize*0.5/rem;
+        if(fontSize < 0.5) fontSize = Math.min(rem, outerBoardTileSize * 0.75 / rem);
+        document.documentElement.style.setProperty('--outerBoardFontSize', `${fontSize}rem`);
         if(innerBoard !== null) {
             let y = parseInt(innerBoard.dataset.y);
             let x = parseInt(innerBoard.dataset.x);
@@ -274,7 +279,9 @@ let animationFunction = () => {
 
     if(innerBoard !== null) {
         let innerBoardTileSize = innerBoard.offsetWidth / Board.board.innerDimensions.x;
-        document.documentElement.style.setProperty('--innerBoardFontSize', `${innerBoardTileSize*0.5/rem}rem`);
+        let fontSize = innerBoardTileSize*0.5/rem;
+        if(fontSize < 0.5) fontSize = Math.min(rem, innerBoardTileSize * 0.75 / rem);
+        document.documentElement.style.setProperty('--innerBoardFontSize', `${fontSize}rem`);
     }
 
     requestAnimationFrame(animationFunction);

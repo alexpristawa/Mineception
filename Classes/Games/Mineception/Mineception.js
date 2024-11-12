@@ -5,4 +5,9 @@ class Mineception extends Game {
     constructor(board) {
         super(board);
     }
+
+    assignTileProperties(tile) {
+        let img = tile.div.querySelector('img');
+        tile.div.removeChild(img);
+    }
 }

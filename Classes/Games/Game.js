@@ -4,18 +4,25 @@ class Game {
 
     constructor(board) {
         this.board = board;
+        board.game = this;
+        if(document.querySelector('.innerBoard') != null) {
+            document.querySelector('.innerBoard').fadeOut(200, true);
+        }
+        this.gameDotGame();
+    }
+
+    gameDotGame() {
         this.eventListeners();
         if(Game.game) {
             Game.game.board.box.removeEventListener('mousedown', Game.game.LCEL);
             Game.game.board.box.removeEventListener('contextmenu', Game.game.RCEL);
         }
-        if(document.querySelector('.innerBoard') != null) {
-            document.querySelector('.innerBoard').fadeOut(200, true);
-        }
         Game.game = this;
     }
     
     eventListeners() {
+        this.board.box.removeEventListener('mousedown', this.LCEL);
+        this.board.box.removeEventListener('contextmenu', this.RCEL);
         this.board.box.addEventListener('mousedown', this.LCEL);
         this.board.box.addEventListener('contextmenu', this.RCEL);
     }
@@ -37,12 +44,16 @@ class Game {
             div = event.target.parentNode;
         }
         if(!div.classList.contains('tile')) return;
-        let y = div.dataset.y;
-        let x = div.dataset.x;
+        let y = parseInt(div.dataset.y);
+        let x = parseInt(div.dataset.x);
         if(this.board.firstClick) {
             this.board.ms = 0;
             this.board.firstClick = false;
             this.board.fixMines(y, x);
+            if(this.constructor.mode == 'chessSweeper') {
+                this.assignPieces();
+                this.firstReveal(y, x);
+            }
         }
         if((keyboard.Meta || keyboard.Control) && this.board.tileMap[y][x].tile.wasRevealed === false) {
             this.rightClickFunction(event);
@@ -66,5 +77,21 @@ class Game {
         let y = parseInt(div.dataset.y);
         let x = parseInt(div.dataset.x);
         this.board.tileMap[y][x].tile.flag();
+    }
+    
+    assignTileProperties(tile) {
+        tile.div.innerHTML = '';
+    }
+
+    accessAllTiles(tile) {
+        let arr = [];
+        for(let y = Math.max(0, tile.y-1); y <= Math.min(tile.parent.outerDimensions.y-1, tile.y+1); y++) {
+            for(let x = Math.max(0, tile.x-1); x <= Math.min(tile.parent.outerDimensions.x-1, tile.x+1); x++) {
+                if(y != tile.y || x != tile.x) {
+                    arr.push(tile.parent.tileMap[y][x]);
+                }
+            }
+        }
+        return arr;
     }
 }

@@ -87,6 +87,8 @@ class Board {
             new Classic(this);
         } else if(gamemode == 'minesOnly') {
             new MinesOnly(this);
+        } else if(gamemode == 'chessSweeper') {
+            new ChessSweeper(this);
         }
 
         for(let y = 0; y < this.tileMap.length; y++) {
@@ -115,9 +117,8 @@ class Board {
                     }
                     if(this.isOuter && this.mineception) {
                         this.tileMap[y][x] = new Board(this.innerDimensions, null, y, x);
-                    }// else {
-                        new Tile(y, x, this.box, this);
-                    //}
+                    }
+                    new Tile(y, x, this.box, this);
                 }
             }
         }

@@ -134,12 +134,32 @@ img {
 }
 
 .outerTile {
+    position: relative;
     font-size: var(--outerBoardFontSize);
     background-color: var(--darkerBackgroundColor);
     /*border: calc(var(--outerBoardFontSize)/20) solid var(--backgroundColor);*/
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.outerTile > p {
+    margin: 0;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+    z-index: 1;
+}
+
+.outerTile > i {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: rgb(25, 25, 25);
+    font-size: 3.5rem;
+    z-index: 0;
+    opacity: 0;
 }
 
 .innerTile {
@@ -388,6 +408,7 @@ img {
     -webkit-backdrop-filter: blur(5px);
     display: none;
     opacity: 0;
+    z-index: 10;
 }
 
 #winDiv {

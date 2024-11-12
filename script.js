@@ -214,6 +214,17 @@ boardElement.addEventListener('mousedown', (event) => {
     }
 });
 
+document.addEventListener('mousedown', (event) => {
+    if(Game.game) {
+        if(Game.game.constructor.name == 'ChessSweeper') {
+            if(!event.target.matches('#boardContainer *')) {
+                Game.game.clearSelected();
+                Game.game.selected = null;
+            }
+        }
+    }
+});
+
 document.addEventListener('mouseup', (event) => {
     if(event.button == 0) {
         mouseClicks.left = false;

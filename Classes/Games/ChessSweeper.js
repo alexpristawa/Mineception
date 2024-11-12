@@ -4,6 +4,44 @@ class ChessSweeper extends Game {
 
     constructor(board) {
         super(board);
+        this.selected = null;
+    }
+
+    leftClickFunction(event) {
+        super.leftClickFunction(event);
+        let div = event.target;
+        if(!this.board.mineception && !event.target.classList.contains('tile')) {
+            div = event.target.parentNode;
+        }
+        if(!div.classList.contains('tile')) return;
+        this.clearSelected();
+        let x = parseInt(div.dataset.x);
+        let y = parseInt(div.dataset.y);
+        if(this.board.tileMap[y][x] == this.selected) {
+            this.selected = null;
+            return;
+        }
+        if(this.board.tileMap[y][x].tile.wasRevealed && !(event.metaKey || event.ctrlKey)) {
+            this.selected = this.board.tileMap[y][x];
+            let arr = this.accessAllTiles(this.selected.tile);
+            arr.forEach(tile => {
+                if(!tile.tile.wasRevealed) {
+                    tile.tile.div.style.backgroundColor = 'rgb(53, 73, 77)';
+                }
+            });
+        }
+    }
+
+    clearSelected() {
+        if(this.selected) {
+            this.accessAllTiles(this.selected.tile).forEach(tile => {
+                if(tile.tile.wasRevealed) {
+                    tile.tile.div.style.backgroundColor = 'var(--evenDarkerBackgroundColor)';
+                } else {
+                    tile.tile.div.style.backgroundColor = 'var(--darkerBackgroundColor)';
+                }
+            });
+        }
     }
 
     assignPieces() {
@@ -61,7 +99,6 @@ class ChessSweeper extends Game {
 
     accessAllTiles(tile) {
         let arr = [];
-        console.log(tile);
         if(tile.chessPiece == 'king') {
             for(let y = Math.max(0, tile.y-1); y <= Math.min(this.board.outerDimensions.y-1, tile.y+1); y++) {
                 for(let x = Math.max(0, tile.x-1); x <= Math.min(this.board.outerDimensions.x-1, tile.x+1); x++) {
